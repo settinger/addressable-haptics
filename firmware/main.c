@@ -62,6 +62,7 @@ int main(void) {
 		// Check if PB0 (pin 1) has triggered an interrupt
 		if (EIFR & (1<<INTF0)) {
 			EIFR |= 1<<INTF0; // Clear interrupt flag
+			timeSinceLastSignal = 0; // Clear idle timer
 			// Wait .1 ms, take reading
 			_delay_us(100);
 			receivedBit = PINB & 1;
