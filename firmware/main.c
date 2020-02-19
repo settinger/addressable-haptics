@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 // Variables used below
 int timeSinceLastSignal = 0; // Approx. number of milliseconds without receiving a valid signal
@@ -16,7 +17,7 @@ void Setup(void) {
 	OCR0A = 63;                       // A nice middle-of-the-range value for timing during PWM
 	DDRB = 6<<PORTB0;                 // Datasheet p76; Set PB1 (pin 3) and PB2 (pin 4) as output
 	PUEB = 3<<PUEB0;                  // Datasheet p74; set PB0 (pin 1) and PB1 (pin 3) to use internal pullup resistor
-	SREG = 128;                       // Datasheet p25; enable interrupts
+	sei();                            // Datasheet p25; enable interrupts
 	EIMSK = 1;                        // Datasheet p57; enable external interrupts
 	EICRA = 2<<ISC00;                 // Datasheet p56; set external interrupt to detect falling edge
 	PCMSK = 1;                        // Datasheet p61; set PB0 (pin 1) as external interrupt pin
@@ -46,7 +47,7 @@ void sendSignal(int signal) {
 		_delay_us(20);
 		PORTB |= 0b0100;
 		_delay_us(180);
-	} else {
+		} else {
 		PORTB &= 0b1011;
 		_delay_us(150);
 		PORTB |= 0b0100;
@@ -55,7 +56,7 @@ void sendSignal(int signal) {
 }
 
 int main(void) {
-		
+	
 	Setup();
 	
 	while(1) {
