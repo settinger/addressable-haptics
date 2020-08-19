@@ -1,3 +1,4 @@
+#define F_CPU 1000000UL
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -10,17 +11,17 @@ int bitsReceived = 0;        // How many bits received in receiver mode
 int receivedData = 0;        // Data obtained in receiver mode
 
 void Setup(void) {
-	TCCR0A = (3<<COM0B0) | (2<<WGM00) // Datasheet p100; set PB1 (Pin 3) as PWM pin
-	TCCR0B = (3<<WGM02) | (2<<CS00)   // Datasheet p103; set PWM behavior, set clock scaler to 125 kHz
-	OCR0B = 0;                        // Counter for PWM on PB1 (pin 3)
-	ICR0 = 127;                       // Counter resets approx. every millisecond, good for timing
-	OCR0A = 63;                       // A nice middle-of-the-range value for timing during PWM
-	DDRB = 6<<PORTB0;                 // Datasheet p76; Set PB1 (pin 3) and PB2 (pin 4) as output
-	PUEB = 3<<PUEB0;                  // Datasheet p74; set PB0 (pin 1) and PB1 (pin 3) to use internal pullup resistor
-	sei();                            // Datasheet p25; enable interrupts
-	EIMSK = 1;                        // Datasheet p57; enable external interrupts
-	EICRA = 2<<ISC00;                 // Datasheet p56; set external interrupt to detect falling edge
-	PCMSK = 1;                        // Datasheet p61; set PB0 (pin 1) as external interrupt pin
+	TCCR0A = (3<<COM0B0) | (2<<WGM00); // Datasheet p100; set PB1 (Pin 3) as PWM pin
+	TCCR0B = (3<<WGM02) | (2<<CS00);   // Datasheet p103; set PWM behavior, set clock scaler to 125 kHz
+	OCR0B = 0;                         // Counter for PWM on PB1 (pin 3)
+	ICR0 = 127;                        // Counter resets approx. every millisecond, good for timing
+	OCR0A = 63;                        // A nice middle-of-the-range value for timing during PWM
+	DDRB = 6<<PORTB0;                  // Datasheet p76; Set PB1 (pin 3) and PB2 (pin 4) as output
+	PUEB = 3<<PUEB0;                   // Datasheet p74; set PB0 (pin 1) and PB1 (pin 3) to use internal pullup resistor
+	sei();                             // Datasheet p25; enable interrupts
+	EIMSK = 1;                         // Datasheet p57; enable external interrupts
+	EICRA |= 2<<ISC00;                 // Datasheet p56; set external interrupt to detect falling edge
+	PCMSK = 1;                         // Datasheet p61; set PB0 (pin 1) as external interrupt pin
 }
 
 void idleMode(void) {
@@ -40,8 +41,8 @@ void receiverMode(void) {
 }
 
 void sendSignal(int signal) {
-	// If signal is a logical 1: clear PORTB2 for 20 μs, set PORTB2 for 180 μs, exit
-	// If signal is a logical 0: clear portB2 for 150 μs, set PORTB2 for 50 μs, exit
+	// If signal is a logical 1: clear PORTB2 for 20 ?s, set PORTB2 for 180 ?s, exit
+	// If signal is a logical 0: clear portB2 for 150 ?s, set PORTB2 for 50 ?s, exit
 	if (signal) {
 		PORTB &= 0b1011;
 		_delay_us(20);
@@ -73,15 +74,15 @@ int main(void) {
 				passThroughMode();
 			}
 			// If we're in idle mode and reading is LOW: enter receiver mode
-			if (mode == 0 && !receivedBit) {
+			else if (mode == 0 && !receivedBit) {
 				receiverMode();
 			}
 			// If we're in pass-through mode: pass through
-			if (mode == 1) {
+			else if (mode == 1) {
 				sendSignal(receivedBit);
 			}
 			// If we're in receiver mode: add bit to received byte
-			if (mode == 2) {
+			else if (mode == 2) {
 				receivedData |= receivedBit<<bitsReceived;
 				bitsReceived++;
 				// If we've received seven bits: set OCR0B to the new motor intensity and enter idle mode
