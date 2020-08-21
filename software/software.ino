@@ -8,14 +8,14 @@ void sendHigh(void) {
   digitalWrite(datapin, LOW);
   delayMicroseconds(20);
   digitalWrite(datapin, HIGH);
-  delayMicroseconds(180);
+  delayMicroseconds(280);
 }
 
 // Send a manchester-encoded low bit
 // Drive pin low for 150 microseconds, high for 50 microseconds
 void sendLow(void) {
   digitalWrite(datapin, LOW);
-  delayMicroseconds(150);
+  delayMicroseconds(250);
   digitalWrite(datapin, HIGH);
   delayMicroseconds(50);
 }
@@ -41,12 +41,9 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(datapin, OUTPUT);
   digitalWrite(datapin, HIGH);
+  delay(5000);
+  setValue(1, 37);
   delay(1000);
-  setValue(0, 64);
-  delay(1000);
-  setValue(0, 127);
-  delay(1000);
-  setValue(0, 0);
 }
 
 void loop() {

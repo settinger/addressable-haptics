@@ -24,12 +24,8 @@ F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-8127-AVR-8-bit-Microc
 	1    4775 2850
 	1    0    0    -1  
 $EndComp
-Text Label 5475 2750 0    50   ~ 0
-signal_out
 Text Label 5475 2650 0    50   ~ 0
 to_mosfet
-Text Label 5475 2550 0    50   ~ 0
-signal_in
 Wire Wire Line
 	5475 2750 5375 2750
 Text GLabel 4675 2125 0    50   Input ~ 0
@@ -179,4 +175,8 @@ Text Label 5050 4425 0    50   ~ 0
 tpi_data
 Text Label 5050 4325 0    50   ~ 0
 tpi_rst
+Text Label 5475 2550 0    50   ~ 0
+signal_in
+Text Label 5475 2750 0    50   ~ 0
+signal_out
 $EndSCHEMATC
