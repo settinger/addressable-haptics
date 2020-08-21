@@ -98,17 +98,6 @@ F 3 "~" H 4550 1650 50  0001 C CNN
 	1    4550 1650
 	0    1    1    0   
 $EndComp
-$Comp
-L Device:Q_PMOS_GSD Q1
-U 1 1 5E4DD596
-P 5000 1650
-F 0 "Q1" H 5205 1696 50  0000 L CNN
-F 1 "Q_PMOS_GSD" H 5205 1605 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 5200 1750 50  0001 C CNN
-F 3 "~" H 5000 1650 50  0001 C CNN
-	1    5000 1650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4325 1650 4400 1650
 Wire Wire Line
@@ -175,8 +164,19 @@ Text Label 5050 4425 0    50   ~ 0
 tpi_data
 Text Label 5050 4325 0    50   ~ 0
 tpi_rst
-Text Label 5475 2550 0    50   ~ 0
-signal_in
 Text Label 5475 2750 0    50   ~ 0
+signal_in
+Text Label 5475 2550 0    50   ~ 0
 signal_out
+$Comp
+L Device:Q_PNP_BEC Q1
+U 1 1 5F404B6A
+P 5000 1650
+F 0 "Q1" H 5225 1700 50  0000 L CNN
+F 1 "Q_PNP_BEC" H 5225 1650 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5200 1750 50  0001 C CNN
+F 3 "~" H 5000 1650 50  0001 C CNN
+	1    5000 1650
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
