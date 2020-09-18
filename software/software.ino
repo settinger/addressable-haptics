@@ -8,16 +8,16 @@ void sendHigh(void) {
   digitalWrite(datapin, LOW);
   delayMicroseconds(20);
   digitalWrite(datapin, HIGH);
-  delayMicroseconds(280);
+  delayMicroseconds(120);
 }
 
 // Send a manchester-encoded low bit
 // Drive pin low for 250 microseconds, high for 50 microseconds
 void sendLow(void) {
   digitalWrite(datapin, LOW);
-  delayMicroseconds(250);
+  delayMicroseconds(120);
   digitalWrite(datapin, HIGH);
-  delayMicroseconds(50);
+  delayMicroseconds(20);
 }
 
 // Set the intensity of one motor
@@ -42,18 +42,44 @@ void setup() {
   pinMode(datapin, OUTPUT);
   digitalWrite(datapin, HIGH);
   delay(1000);
+  setValue(3, 127);
+  delay(1000);
+  setValue(2, 127);
+  delay(1000);
+  setValue(1, 127);
+  delay(1000);
+  setValue(0, 127);
+  delay(1000);
+  setValue(3, 0);
+  delay(1000);
+  setValue(2, 0);
+  delay(1000);
   setValue(1, 0);
   delay(1000);
   setValue(0, 0);
   delay(1000);
-  setValue(1, 0);
-  delay(1000);
-  setValue(1, 0);
-  delay(500);
-  setValue(0, 0);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  for (signed int i=0; i<64; i++) {
+    setValue(0, 2*i);
+    delay(4);
+    setValue(1, 127-2*i);
+    delay(4);
+    setValue(2, 2*i);
+    delay(4);
+    setValue(3, 127-2*i);
+    delay(4);
+  }
+  for (signed int i=0; i<64; i++) {
+    setValue(0, 127-2*i);
+    delay(4);
+    setValue(1, 2*i);
+    delay(4);
+    setValue(2, 127-2*i);
+    delay(4);
+    setValue(3, 2*i);
+    delay(4);
+  }
 }
